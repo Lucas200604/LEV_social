@@ -1,0 +1,32 @@
+{% extends 'layouts/nav.html' %}
+{% load humanize %}
+{% block content %}
+
+{% for post in posts %}
+<article>
+    <!-- Verificando si el usuario a subido una imagen y mostrando en pantalla -->
+    {% if post.image %}
+    <div class="postImageBox"><img src="{{ post.image.url }}" class="imageInPost"></div>
+    {% endif %}
+    <div class="container-post">
+        <img src="{{ post.user.profile.image.url }}">
+        <div>
+            {% if post.user.is_staff %}
+            <h2 class="username"><a href="{% url 'profile' post.user.username %}">@{{ post.user.username }} <i class="fa-solid fa-circle-check fa-xs" style="color: #1577c1;"></i></a></h2>
+            {% else %}
+            <h2 class="username"><a href="{% url 'profile' post.user.username %}">@{{ post.user.username }}</a></h2>
+            {% endif %}
+            <i class="clock"></i>
+            <time data-time="#">{{ post.timestamp|naturaltime }}</time>
+            <div class="post">{{ post.content }} </div>
+        </div>
+        <div class="like">
+            <form action="{% url 'like_post' post.pk %}" method="POST" class="form-like">
+                {% csrf_token %}
+                <button type="submit" name="post_id" value="{{ post.id }}" class="like_boton"><i class="fa-solid fa-heart fa-sm heart"></i></button>
+                <p>{{ post.likes.count }}</p>
+            </form>
+        </div>
+</article>
+{% endfor %}
+{% endblock %}

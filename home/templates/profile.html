@@ -1,0 +1,47 @@
+{% extends 'feed.html' %}
+{% block content %}
+
+<!-- Profile -->
+<div class="profile">
+	<img src="{{ user.profile.image.url }}" class="img-user">
+    {% if user.is_staff %}
+	<h2>@{{ user.username }} <i class="fa-solid fa-circle-check fa-xs" style="color: #1577c1;"></i></h2>
+    {% else %}
+    <h2>@{{ user.username }}</h2>
+    {% endif %}
+	<p>{{ user.profile.biografia }}</p>
+
+{% if request.user.is_authenticated %}
+	{% if user.username != request.user.username %}
+		{% if user not in request.user.profile.following %}
+			<a class="follow-a" href="{% url 'follow' user %}"><button>Seguir</button></a>
+		{% else %}
+			<a class="follow-a" href="{% url 'unfollow' user %}"><button>Dejar de seguir</button></a>
+		{% endif %}
+	{% else %}
+		<a href="{% url 'edit-profile' %}"><button>Editar Perfil</button></a>
+	{% endif %}
+{% endif %}
+	
+</div>
+
+<!-- Follow items -->
+<div class="follow">
+	<div>
+		<h5>Publicaciones</h5>
+		<p>{{ user.posts.count }}</p>
+	</div>
+	<div>
+		<h5>Seguidores</h5>
+		<p>{{ user.profile.followers.count }}</p>
+
+	</div>
+	<div>
+		<h5>Seguidos</h5>
+		<p>{{ user.profile.following.count }}</p>
+	</div>
+</div>
+
+
+{{ block.super }}
+{% endblock %}

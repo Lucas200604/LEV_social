@@ -1,0 +1,12 @@
+{% extends 'layouts/nav.html' %}
+
+{% block content %}
+
+<form method="post" enctype="multipart/form-data" class="form-post">
+    <h2>Publicar</h2>
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit" class="post-bttn">Publicar</button>
+</form>
+
+{% endblock %}

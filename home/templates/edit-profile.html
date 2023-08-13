@@ -1,0 +1,9 @@
+{% extends 'layouts/nav.html' %}
+
+{% block content %}
+<form action="/edit-profile/" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Guardar</button>
+</form>
+{% endblock %}
